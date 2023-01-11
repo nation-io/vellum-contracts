@@ -1,0 +1,560 @@
+{
+  "version": "0.1.0",
+  "name": "vellum",
+  "instructions": [
+    {
+      "name": "createPostExecutionRoute",
+      "accounts": [
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "agreement",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "postExecutionRoute",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "id",
+          "type": "publicKey"
+        },
+        {
+          "name": "routeIndex",
+          "type": "u8"
+        },
+        {
+          "name": "instructions",
+          "type": {
+            "vec": {
+              "defined": "InstructionData"
+            }
+          }
+        },
+        {
+          "name": "routeType",
+          "type": {
+            "defined": "RouteType"
+          }
+        }
+      ]
+    },
+    {
+      "name": "createPostExecutionRouteEscrow",
+      "accounts": [
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "agreement",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "postExecutionRoute",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "postExecutionRouteEscrow",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "escrowMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "postExecutionRouteBump",
+          "type": "u8"
+        },
+        {
+          "name": "routeIndex",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "depositPostExecutionRouteEscrow",
+      "accounts": [
+        {
+          "name": "owner",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "delegator",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "agreement",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "postExecutionRoute",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "postExecutionRouteEscrow",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "escrowMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "postExecutionRouteBump",
+          "type": "u8"
+        },
+        {
+          "name": "postExecutionRouteEscrowBump",
+          "type": "u8"
+        },
+        {
+          "name": "routeIndex",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "processPostExecutionRouteEscrow",
+      "accounts": [
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "agreement",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "postExecutionRoute",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "postExecutionRouteEscrow",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "escrowMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "postExecutionRouteBump",
+          "type": "u8"
+        },
+        {
+          "name": "postExecutionRouteEscrowBump",
+          "type": "u8"
+        },
+        {
+          "name": "routeIndex",
+          "type": "u8"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Agreement",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "version",
+            "type": "u16"
+          },
+          {
+            "name": "creator",
+            "type": "publicKey"
+          },
+          {
+            "name": "initializer",
+            "type": "publicKey"
+          },
+          {
+            "name": "id",
+            "type": "publicKey"
+          },
+          {
+            "name": "fileName",
+            "type": "string"
+          },
+          {
+            "name": "documentUrl",
+            "type": "string"
+          },
+          {
+            "name": "remainingSignatures",
+            "type": "u32"
+          },
+          {
+            "name": "signatories",
+            "type": {
+              "vec": {
+                "defined": "VellumSigner"
+              }
+            }
+          },
+          {
+            "name": "createdAt",
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "quorum",
+            "type": "u32"
+          },
+          {
+            "name": "public",
+            "type": "bool"
+          },
+          {
+            "name": "postExecution",
+            "type": {
+              "option": {
+                "defined": "PostExecution"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "PostExecutionRoute",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "index",
+            "type": "u8"
+          },
+          {
+            "name": "routeType",
+            "type": {
+              "defined": "RouteType"
+            }
+          },
+          {
+            "name": "agreement",
+            "type": "publicKey"
+          },
+          {
+            "name": "instructions",
+            "type": {
+              "vec": {
+                "defined": "InstructionData"
+              }
+            }
+          },
+          {
+            "name": "executed",
+            "type": "bool"
+          },
+          {
+            "name": "received",
+            "type": "bool"
+          }
+        ]
+      }
+    }
+  ],
+  "types": [
+    {
+      "name": "VellumSigner",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "key",
+            "type": "publicKey"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "organization",
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "type": "string"
+          },
+          {
+            "name": "signature",
+            "type": "string"
+          },
+          {
+            "name": "signedAt",
+            "type": "i64"
+          },
+          {
+            "name": "ip",
+            "type": "string"
+          },
+          {
+            "name": "txSignature",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PostExecution",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "routes",
+            "type": {
+              "vec": "publicKey"
+            }
+          },
+          {
+            "name": "executions",
+            "type": {
+              "vec": "bool"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "InstructionData",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "programId",
+            "docs": [
+              "Pubkey of the instruction processor that executes this instruction"
+            ],
+            "type": "publicKey"
+          },
+          {
+            "name": "accounts",
+            "docs": [
+              "Metadata for what accounts should be passed to the instruction processor"
+            ],
+            "type": {
+              "vec": {
+                "defined": "AccountMeta"
+              }
+            }
+          },
+          {
+            "name": "data",
+            "docs": [
+              "Opaque data passed to the instruction processor"
+            ],
+            "type": "bytes"
+          }
+        ]
+      }
+    },
+    {
+      "name": "AccountMeta",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "pubkey",
+            "docs": [
+              "An account's public key."
+            ],
+            "type": "publicKey"
+          },
+          {
+            "name": "isSigner",
+            "docs": [
+              "True if an `Instruction` requires a `Transaction` signature matching `pubkey`."
+            ],
+            "type": "bool"
+          },
+          {
+            "name": "isWritable",
+            "docs": [
+              "True if the account data or metadata may be mutated during program execution."
+            ],
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "RouteType",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "NativeEscrow",
+            "fields": [
+              {
+                "name": "delegator",
+                "type": "publicKey"
+              },
+              {
+                "name": "dst_wallet",
+                "type": "publicKey"
+              },
+              {
+                "name": "amount",
+                "type": "u64"
+              }
+            ]
+          },
+          {
+            "name": "TokenEscrow",
+            "fields": [
+              {
+                "name": "mint",
+                "type": "publicKey"
+              },
+              {
+                "name": "delegator",
+                "type": "publicKey"
+              },
+              {
+                "name": "dst_wallet",
+                "type": "publicKey"
+              },
+              {
+                "name": "amount",
+                "type": "u64"
+              }
+            ]
+          },
+          {
+            "name": "Custom",
+            "fields": [
+              {
+                "name": "short_description",
+                "type": "string"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "BadSignatureInstruction"
+    },
+    {
+      "code": 6001,
+      "name": "BadSignatureHeader"
+    },
+    {
+      "code": 6002,
+      "name": "BadSignatureArgs"
+    },
+    {
+      "code": 6003,
+      "name": "BadVerification"
+    },
+    {
+      "code": 6004,
+      "name": "InvalidSignatory"
+    },
+    {
+      "code": 6005,
+      "name": "BadSeeds"
+    },
+    {
+      "code": 6006,
+      "name": "BadBump"
+    },
+    {
+      "code": 6007,
+      "name": "AttacherNotInitializer",
+      "msg": "Only the initializer of an agreement can attach a transaction to it."
+    },
+    {
+      "code": 6008,
+      "name": "CannotAttachWithSigners",
+      "msg": "Cannot attach a transaction to an agreement that already has signers."
+    },
+    {
+      "code": 6009,
+      "name": "AgreementNotFullySigned",
+      "msg": "Cannot execute an agreement which is not fully signed."
+    },
+    {
+      "code": 6010,
+      "name": "AgreementAlreadyExecuted",
+      "msg": "Cannot execute an agreement twice."
+    }
+  ]
+}
